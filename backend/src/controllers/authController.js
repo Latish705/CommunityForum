@@ -1,5 +1,5 @@
 import { User } from "../models/userModel.js";
-import { hashPassword } from "../utils/authUtils.js";
+import { comparePassword, hashPassword } from "../utils/authUtils.js";
 import { uploadToCloudinary } from "../utils/cloudinary.js";
 
 export const register = async (req, res) => {
@@ -16,10 +16,10 @@ export const register = async (req, res) => {
   if (existingUser) {
     return res.status(200).send({
       success: false,
-      message: "User already exists with this email",
+      message: "User already exists with this email Please login",
     });
   }
-
+  console.log(res.files);
   //upload user's avatar to cloudinary
 
   let avatarLocalPath;
@@ -71,6 +71,56 @@ export const register = async (req, res) => {
       success: false,
       message: "Error creating user",
       error: error.message,
+    });
+  }
+};
+
+export const login = async (req, res) => {
+  //check fields like email and password in request
+  //check in database that does user exists in database or not
+  //then we will check does password matches or not
+
+  try {
+    const { email, password } = req.body; //if req comes empty than check for body parser
+
+    //we are disscussing new method
+    if ([email, password].some((fields) => fields?.trim() === "")) {
+      return res.status(400).send({
+        success: false,
+        message: "Email or password is required",
+      });
+    }
+
+    const userExists = await User.findOne({ email });
+    if (!userExists) {
+      return res.status(400).send({
+        success: false,
+        message: "User with this email not exists please login first",
+      });
+    }
+
+    const isPasswordMatch = await comparePassword(
+      password,
+      userExists.password
+    );
+
+    if (!isPasswordMatch) {
+      return res.status(500).send({
+        success: false,
+        message: "Password doesn't match please try again",
+      });
+    }
+
+    if (isPasswordMatch) {
+      return res.status(200).send({
+        success: true,
+        message: "Login in successfully",
+      });
+    }
+  } catch (error) {
+    return res.status(500).send({
+      success: false,
+      message: error.message,
     });
   }
 };
