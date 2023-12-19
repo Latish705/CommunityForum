@@ -1,32 +1,32 @@
 import React, { useState } from "react";
 import axios from "axios";
-
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { login } from "../store/authSlice";
 const Login = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const formData = new FormData();
-
-      formData.append("email", email);
-      formData.append("password", password);
-
-      const response = await axios.post(
-        "http://localhost:8080/api/v1/login",
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data", // Important for file uploads
-          },
-        }
-      );
+      const response = await axios.post("http://localhost:8080/api/v1/login", {
+        email,
+        password,
+      });
       if (response.data.success) {
-        // navigate;
+        const userData = {
+          status: true,
+          userData: response.data.user,
+        };
+        // console.log(userData);
+        dispatch(login(userData));
+        navigate("/");
       }
     } catch (error) {
-      console.log(error);
+      console.log(error.response.data);
     }
   };
 

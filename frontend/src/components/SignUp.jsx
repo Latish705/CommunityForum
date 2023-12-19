@@ -1,10 +1,10 @@
 /* eslint-disable no-unused-vars */
 import React, { useState } from "react";
 import axios from "axios";
-// import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const SignUp = () => {
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   // const [formData, setFormData] = useState({
   //   username: "",
   //   email: "",
@@ -44,7 +44,7 @@ const SignUp = () => {
         }
       );
       if (response.data.success) {
-        // navigate;
+        navigate("/login");
       }
     } catch (error) {
       console.log(error);

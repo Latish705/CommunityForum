@@ -91,7 +91,7 @@ export const login = async (req, res) => {
       });
     }
 
-    const userExists = await User.findOne({ email });
+    const userExists = await User.findOne({ email }).select();
     if (!userExists) {
       return res.status(400).send({
         success: false,
@@ -110,11 +110,17 @@ export const login = async (req, res) => {
         message: "Password doesn't match please try again",
       });
     }
+    const userData = {
+      username: userExists.username,
+      email: userExists.email,
+      avatar: userExists.avatar,
+    };
 
     if (isPasswordMatch) {
       return res.status(200).send({
         success: true,
         message: "Login in successfully",
+        user: userData,
       });
     }
   } catch (error) {
