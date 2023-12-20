@@ -6,11 +6,9 @@ import { CheckIcon } from "@heroicons/react/20/solid";
 import { useNavigate } from "react-router-dom";
 
 const navigation = [
-  { name: "Dashboard", href: "#", current: true },
-  { name: "Team", href: "#", current: false },
-  { name: "Projects", href: "#", current: false },
-  { name: "Calendar", href: "#", current: false },
-  { name: "Reports", href: "#", current: false },
+  { name: "Home", href: "/home", current: true },
+  { name: "About Us", href: "#", current: false },
+  { name: "Features", href: "#", current: false },
 ];
 const userDataNavigation = [
   { name: "Your Profile", href: "#" },
@@ -46,11 +44,11 @@ export default function Navbar() {
                 <div className="flex h-16 items-center justify-between">
                   <div className="flex items-center">
                     <div className="flex-shrink-0">
-                      <img
+                      {/* <img
                         className="h-8 w-8"
                         src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
                         alt="Your Company"
-                      />
+                      /> */}
                     </div>
                     <div className="hidden md:block">
                       <div className="ml-10 flex items-baseline space-x-4">
@@ -141,12 +139,20 @@ export default function Navbar() {
                         </Menu>
                       </div>
                     ) : (
-                      <button
-                        className="border border-black px-4 py-2 rounded-md bg-white text-black hover:bg-gray-200 transition-colors duration-300"
-                        onClick={() => navigate("/login")}
-                      >
-                        Login
-                      </button>
+                      <div>
+                        <button
+                          className="border border-black px-4 py-2 rounded-md bg-white text-black hover:bg-gray-200 transition-colors duration-300 mx-1"
+                          onClick={() => navigate("/register")}
+                        >
+                          Register
+                        </button>
+                        <button
+                          className="border border-black px-4 py-2 rounded-md bg-white text-black hover:bg-gray-200 transition-colors duration-300"
+                          onClick={() => navigate("/login")}
+                        >
+                          Login
+                        </button>
+                      </div>
                     )}
                   </div>
                   <div className="-mr-2 flex md:hidden">
