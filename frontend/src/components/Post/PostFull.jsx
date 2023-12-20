@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { useParams, useRevalidator } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import axios from "axios";
+import { nanoid } from "@reduxjs/toolkit";
 
 const Post = () => {
   const { postId } = useParams();
@@ -13,7 +14,10 @@ const Post = () => {
   // Dummy data for post and comments
   const postContent = currentPost.title || "Loading...";
   const postImage = currentPost.image || "";
-  const [postComments, setPostComments] = useState(currentPost.comments || []);
+  const postComments = currentPost.comments || [];
+
+  // State for comments
+  const [comments, setComments] = useState(postComments);
 
   // State for new comment input
   const [newComment, setNewComment] = useState("");
@@ -31,11 +35,9 @@ const Post = () => {
       );
       console.log(currentPost._id, clickedPostId);
       console.log(response.data); // Log the response if needed
+
       // Add the new comment to the comments state
-      setPostComments([
-        ...postComments,
-        { id: postComments.length + 1, text: newComment },
-      ]);
+      setComments([...comments, { comment: newComment }]);
       // Clear the input field
       setNewComment("");
     } catch (error) {
@@ -90,8 +92,8 @@ const Post = () => {
       <div className="mt-4">
         <h2 className="text-xl font-semibold mb-2 text-gray-800">Comments</h2>
         <ul>
-          {postComments.map((comment) => (
-            <li key={comment.id} className="mb-2 text-gray-600">
+          {comments.map((comment) => (
+            <li key={nanoid()} className="mb-2 text-gray-600">
               {comment.comment}
             </li>
           ))}
