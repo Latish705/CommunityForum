@@ -9,7 +9,7 @@ const Post = () => {
   const navigate = useNavigate();
   const { postId } = useParams();
   const postState = useSelector((state) => state.post.allPosts);
-  const userData = useSelector((state) => state.auth.userData);
+  const loggedInStatus = useSelector((state) => state.auth.status);
   const clickedPostId = postId.split("=")[1];
   const currentPost =
     postState.find((post) => post._id === clickedPostId) || {};
@@ -28,7 +28,8 @@ const Post = () => {
   // Handler for adding a new comment
   const addComment = async () => {
     try {
-      if (!userData.status) {
+      console.log(loggedInStatus);
+      if (!loggedInStatus) {
         alert("Please login first");
         navigate("/login");
         return;
