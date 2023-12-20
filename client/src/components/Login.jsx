@@ -12,10 +12,13 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:8080/api/v1/login", {
-        email,
-        password,
-      });
+      const response = await axios.post(
+        "https://devi-community-forum-server.onrender.com/api/v1/login",
+        {
+          email,
+          password,
+        }
+      );
       if (response.data.success) {
         const userData = {
           status: true,

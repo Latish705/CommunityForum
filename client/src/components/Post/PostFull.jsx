@@ -35,7 +35,7 @@ const Post = () => {
         return;
       }
       const response = await axios.post(
-        "http://localhost:8080/api/v1/user/addcomment",
+        "https://devi-community-forum-server.onrender.com/api/v1/user/addcomment",
         {
           postId: currentPost._id,
           comment: newComment,
