@@ -3,10 +3,13 @@ import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import { nanoid } from "@reduxjs/toolkit";
+import { useNavigate } from "react-router-dom";
 
 const Post = () => {
+  const navigate = useNavigate();
   const { postId } = useParams();
   const postState = useSelector((state) => state.post.allPosts);
+  const userData = useSelector((state) => state.auth.userData);
   const clickedPostId = postId.split("=")[1];
   const currentPost =
     postState.find((post) => post._id === clickedPostId) || {};
@@ -25,6 +28,11 @@ const Post = () => {
   // Handler for adding a new comment
   const addComment = async () => {
     try {
+      if (!userData.status) {
+        alert("Please login first");
+        navigate("/login");
+        return;
+      }
       const response = await axios.post(
         "http://localhost:8080/api/v1/user/addcomment",
         {
