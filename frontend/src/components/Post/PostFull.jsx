@@ -45,8 +45,13 @@ const Post = () => {
     }
   };
 
-  function convertToSimpleTime(timestamp) {
+  function convertToSimpleDateTime(timestamp) {
     const date = new Date(timestamp);
+
+    // Get year, month, and day
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1; // Months are zero-based
+    const day = date.getDate();
 
     // Get hours, minutes, and AM/PM indicator
     let hours = date.getHours();
@@ -56,14 +61,18 @@ const Post = () => {
     // Convert hours to 12-hour format
     hours = hours % 12 || 12;
 
-    // Format hours and minutes with leading zeros if needed
+    // Format hours, minutes, and day with leading zeros if needed
     const formattedHours = hours < 10 ? `0${hours}` : hours;
     const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
+    const formattedDay = day < 10 ? `0${day}` : day;
 
-    // Construct the 12-hour time string with AM/PM
-    const simpleTime = `${formattedHours}:${formattedMinutes} ${ampm}`;
+    // Format month with leading zero if needed
+    const formattedMonth = month < 10 ? `0${month}` : month;
 
-    return simpleTime;
+    // Construct the date and time string with AM/PM
+    const simpleDateTime = `${year}-${formattedMonth}-${formattedDay} ${formattedHours}:${formattedMinutes} ${ampm}`;
+
+    return simpleDateTime;
   }
 
   return (
@@ -83,7 +92,7 @@ const Post = () => {
         </p>
         <div className="flex items-center pt-2">
           <p className="pr-2 font-body font-light text-gray-600">
-            {convertToSimpleTime(currentPost.createdAt)}
+            {convertToSimpleDateTime(currentPost.createdAt)}
           </p>
         </div>
       </div>
