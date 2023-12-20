@@ -1,11 +1,14 @@
 import React, { useState } from "react";
-
+import axios from "axios";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 const CreatePost = () => {
+  const navigate = useNavigate();
   const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
+  const [discription, setDiscription] = useState("");
   const [image, setImage] = useState("");
   const [previewImage, setPreviewImage] = useState(null);
-
+  const userId = useSelector((state) => state.auth.userData._id);
   // Handler for handling image selection
   const handleImageChange = (e) => {
     const selectedImage = e.target.files[0];
@@ -17,15 +20,33 @@ const CreatePost = () => {
   };
 
   // Handler for submitting the post
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
+    const formData = new FormData();
+    formData.append("title", title);
+    formData.append("discription", discription);
+    formData.append("image", image);
+    formData.append("_id", userId);
+    console.log(formData);
     e.preventDefault();
-
+    const response = await axios.post(
+      "http://localhost:8080/api/v1/user/createpost",
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data", // Set the content type for FormData
+        },
+      }
+    );
+    console.log(response);
     // Add your logic for submitting the post (e.g., API call, dispatch to Redux, etc.)
-    console.log("Post submitted:", { title, description, image });
-
+    console.log("Post submitted:", { title, discription, image });
+    console.log(response.data.success);
+    if (response.data.success) {
+      navigate("/");
+    }
     // Reset form fields
     setTitle("");
-    setDescription("");
+    setDiscription("");
     setImage("");
     setPreviewImage(null);
   };
@@ -55,16 +76,16 @@ const CreatePost = () => {
 
         <div className="mb-4">
           <label
-            htmlFor="description"
+            htmlFor="discription"
             className="block text-sm font-medium text-gray-600"
           >
-            Description
+            Discription
           </label>
           <textarea
-            id="description"
-            name="description"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
+            id="discription"
+            name="discription"
+            value={discription}
+            onChange={(e) => setDiscription(e.target.value)}
             className="mt-1 p-2 w-full border rounded-md"
             rows="4"
             required

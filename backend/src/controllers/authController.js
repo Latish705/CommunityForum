@@ -19,7 +19,7 @@ export const register = async (req, res) => {
       message: "User already exists with this email Please login",
     });
   }
-  console.log(res.files);
+
   //upload user's avatar to cloudinary
 
   let avatarLocalPath;
@@ -114,6 +114,7 @@ export const login = async (req, res) => {
       username: userExists.username,
       email: userExists.email,
       avatar: userExists.avatar,
+      _id: userExists._id,
     };
 
     if (isPasswordMatch) {

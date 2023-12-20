@@ -10,7 +10,7 @@ function App() {
         <Route path="/register" element={<SignUp />} />
         <Route path="/login" element={<Login />} />
         <Route path="/home" element={<Home />} />
-        <Route path="/post" element={<PostFull />} />
+        <Route path="/post/:postId" element={<PostFull />} />
         <Route path="/createpost" element={<CreatePost />} />
         <Route path="*" element={<Error />} />
       </Routes>

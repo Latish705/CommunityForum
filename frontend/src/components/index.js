@@ -6,5 +6,16 @@ import Post from "./Post/Post";
 import Error from "./Error";
 import Footer from "./Footer/Footer";
 import CreatePost from "./Post/CreatePost";
+import AllPost from "./Post/AllPost";
 
-export { Home, Login, SignUp, Navbar, Post, Error, Footer, CreatePost };
+export {
+  Home,
+  Login,
+  SignUp,
+  Navbar,
+  Post,
+  Error,
+  Footer,
+  CreatePost,
+  AllPost,
+};

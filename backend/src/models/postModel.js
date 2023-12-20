@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const CommentSchema = new mongoose.Schema(
   {
-    UserId: {
+    userId: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
       ref: "User",
@@ -17,37 +17,36 @@ const CommentSchema = new mongoose.Schema(
       required: true,
     },
   },
+  { timestamps: true }
+);
+
+export const Comment = mongoose.model("Comment", CommentSchema);
+
+const PostSchema = new mongoose.Schema(
+  {
+    title: {
+      type: String,
+      required: true,
+    },
+    discription: {
+      type: String,
+      required: true,
+    },
+    image: {
+      type: String,
+    },
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    comments: {
+      type: [],
+    },
+  },
   {
     timestamps: true,
   }
 );
 
-export const comment = mongoose.model("Comment", CommentSchema);
-
-const PostSchema = new mongoose.Schema({
-  title: {
-    type: String,
-    required: true,
-  },
-  description: {
-    type: String,
-    required: true,
-  },
-  image: {
-    type: String,
-  },
-  username: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
-    required: true,
-  },
-  comments: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Comment",
-      required: true,
-    },
-  ],
-});
-
-export default Post = mongoose.model("Post", PostSchema);
+export const Post = mongoose.model("Post", PostSchema);

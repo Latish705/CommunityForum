@@ -1,41 +1,88 @@
 import React, { useState } from "react";
+import { useParams, useRevalidator } from "react-router-dom";
+import { useSelector } from "react-redux";
+import axios from "axios";
 
 const Post = () => {
+  const { postId } = useParams();
+  const postState = useSelector((state) => state.post.allPosts);
+  const clickedPostId = postId.split("=")[1];
+  const currentPost =
+    postState.find((post) => post._id === clickedPostId) || {};
+
   // Dummy data for post and comments
-  const postContent =
-    "Vulputate ut pharetra sit amet aliquam id diam maecenas ultricies";
-  const comments = [
-    { id: 1, text: "Great post!" },
-    { id: 2, text: "I learned a lot from this." },
-  ];
+  const postContent = currentPost.title || "Loading...";
+  const postImage = currentPost.image || "";
+  const [postComments, setPostComments] = useState(currentPost.comments || []);
 
   // State for new comment input
   const [newComment, setNewComment] = useState("");
 
   // Handler for adding a new comment
-  const addComment = () => {
-    // Add your logic to store or display the new comment
-    console.log("Adding comment:", newComment);
-    // For simplicity, let's just clear the input field
-    setNewComment("");
+  const addComment = async () => {
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/api/v1/user/addcomment",
+        {
+          postId: currentPost._id,
+          comment: newComment,
+          userId: clickedPostId,
+        }
+      );
+      console.log(currentPost._id, clickedPostId);
+      console.log(response.data); // Log the response if needed
+      // Add the new comment to the comments state
+      setPostComments([
+        ...postComments,
+        { id: postComments.length + 1, text: newComment },
+      ]);
+      // Clear the input field
+      setNewComment("");
+    } catch (error) {
+      console.error("Error adding comment:", error);
+    }
   };
+
+  function convertToSimpleTime(timestamp) {
+    const date = new Date(timestamp);
+
+    // Get hours, minutes, and AM/PM indicator
+    let hours = date.getHours();
+    const minutes = date.getMinutes();
+    const ampm = hours >= 12 ? "PM" : "AM";
+
+    // Convert hours to 12-hour format
+    hours = hours % 12 || 12;
+
+    // Format hours and minutes with leading zeros if needed
+    const formattedHours = hours < 10 ? `0${hours}` : hours;
+    const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
+
+    // Construct the 12-hour time string with AM/PM
+    const simpleTime = `${formattedHours}:${formattedMinutes} ${ampm}`;
+
+    return simpleTime;
+  }
 
   return (
     <div className="border-b border-gray-300 p-4">
       {/* Post Content */}
       <div>
-        <span className="mb-4 inline-block rounded-full bg-green-200 px-2 py-1 font-body text-sm text-green-800">
-          category
-        </span>
+        <img
+          src={postImage}
+          alt="Post Image"
+          className="mb-4 rounded-md max-h-96 object-cover w-full"
+        />
         <p className="block font-body text-lg font-semibold text-gray-800 transition-colors hover:text-green-600">
+          {postContent}
+        </p>
+        <p className="block font-body text-sm font-semibold text-gray-800 transition-colors hover:text-green-600">
           {postContent}
         </p>
         <div className="flex items-center pt-2">
           <p className="pr-2 font-body font-light text-gray-600">
-            July 19, 2020
+            {convertToSimpleTime(currentPost.createdAt)}
           </p>
-          <span className="font-body text-gray-600">//</span>
-          <p className="pl-2 font-body font-light text-gray-600">4 min read</p>
         </div>
       </div>
 
@@ -43,9 +90,9 @@ const Post = () => {
       <div className="mt-4">
         <h2 className="text-xl font-semibold mb-2 text-gray-800">Comments</h2>
         <ul>
-          {comments.map((comment) => (
+          {postComments.map((comment) => (
             <li key={comment.id} className="mb-2 text-gray-600">
-              {comment.text}
+              {comment.comment}
             </li>
           ))}
         </ul>
@@ -58,7 +105,7 @@ const Post = () => {
             onChange={(e) => setNewComment(e.target.value)}
           />
           <button
-            className="bg-blue-500 text-white p-2 ml-2 hover:bg-blue-600"
+            className="bg-blue-500 text-white p-2 ml-2 hover:bg-blue-600 my-4"
             onClick={addComment}
           >
             Add Comment

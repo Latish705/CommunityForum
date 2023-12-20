@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
-import router from "./routes/routes.js";
+import authRouter from "./routes/authRoutes.js";
+import featureRouter from "./routes/featureRoutes.js";
 import bodyParser from "body-parser";
 const app = express();
 
@@ -9,6 +10,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 // routes declaration
 
-app.use("/api/v1", router);
+app.use("/api/v1", authRouter);
+//s
+app.use("/api/v1/user", featureRouter);
 
 export default app;

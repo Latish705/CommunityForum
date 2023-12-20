@@ -6,6 +6,7 @@ const initalState = {
     username: "",
     email: "",
     avatar: "",
+    _id: "",
   },
 };
 
