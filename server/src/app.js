@@ -3,10 +3,10 @@ import cors from "cors";
 import authRouter from "./routes/authRoutes.js";
 import featureRouter from "./routes/featureRoutes.js";
 import bodyParser from "body-parser";
-import corsOption from "./config/CORSoptions.js";
+// import corsOption from "./config/CORSoptions.js";
 const app = express();
 
-app.use(cors(corsOption));
+app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 // routes declaration
