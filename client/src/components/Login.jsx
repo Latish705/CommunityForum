@@ -3,6 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { login } from "../store/authSlice";
+import Cookie from "js-cookie";
 const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -12,17 +13,20 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(
-        "https://devi-community-forum-server.onrender.com/api/v1/login",
-        {
-          email,
-          password,
-        }
-      );
+      const response = await axios.post("http://localhost:8090/api/v1/login", {
+        email,
+        password,
+      });
+      console.log(response.data);
+      const accessToken = Cookie.get("accessToken");
+      const refreshToken = Cookie.get("refreshToken");
+
+      localStorage.setItem("accessToken", accessToken);
+      localStorage.setItem("refreshToken", refreshToken);
       if (response.data.success) {
         const userData = {
           status: true,
-          userData: response.data.user,
+          userData: response.data.data.user,
         };
         // console.log(userData);
         dispatch(login(userData));

@@ -3,12 +3,14 @@ import cors from "cors";
 import authRouter from "./routes/authRoutes.js";
 import featureRouter from "./routes/featureRoutes.js";
 import bodyParser from "body-parser";
+import cookieParser from "cookie-parser";
 // import corsOption from "./config/CORSoptions.js";
 const app = express();
 
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cookieParser());
 // routes declaration
 
 app.use("/api/v1", authRouter);

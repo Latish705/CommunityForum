@@ -18,6 +18,8 @@
     "@mui/material": "^5.15.0",
     "@reduxjs/toolkit": "^2.0.1",
     "axios": "^1.6.2",
+    "cookie-parser": "^1.4.6",
+    "js-cookie": "^3.0.5",
     "netlify": "^13.1.11",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
