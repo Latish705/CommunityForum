@@ -13,7 +13,7 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:8090/api/v1/login", {
+      const response = await axios.post("https://devi-community-forum-server.onrender.com/api/v1/login", {
         email,
         password,
       });

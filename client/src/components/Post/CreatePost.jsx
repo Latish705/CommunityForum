@@ -29,7 +29,7 @@ const CreatePost = () => {
     console.log(formData);
     e.preventDefault();
     const response = await axios.post(
-      "http:localhost:8090/api/v1/user/createpost",
+      "https://devi-community-forum-server.onrender.com/api/v1/user/createpost",
       formData,
       {
         headers: {

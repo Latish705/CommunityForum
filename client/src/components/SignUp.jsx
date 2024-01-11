@@ -35,7 +35,7 @@ const SignUp = () => {
       formData.append("avatar", avatar);
 
       const response = await axios.post(
-        "http://localhost:8090/api/v1/register",
+        "https://devi-community-forum-server.onrender.com/api/v1/register",
         formData,
         {
           headers: {

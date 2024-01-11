@@ -15,7 +15,7 @@ const AllPost = () => {
       try {
         // https://devi-community-forum-server.onrender.com
         const response = await axios.post(
-          "http://localhost:8090/api/v1/user/getallpost"
+          "https://devi-community-forum-server.onrender.com/api/v1/user/getallpost"
         );
         console.log(response.data.allPosts);
         setAllPosts(response.data.allPosts);
